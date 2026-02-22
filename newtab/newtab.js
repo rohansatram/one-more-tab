@@ -4,11 +4,18 @@ const countdownLineOne = document.getElementById("countdown-line-one");
 const countdownLineTwo = document.getElementById("countdown-line-two");
 const setupPrompt = document.getElementById("setup-prompt");
 const resetButton = document.getElementById("reset-button");
+const themeButton = document.getElementById("theme-button");
 const showMoreSection = document.getElementById("show-more-section");
 const showMoreButton = document.getElementById("show-more-button");
 const showMoreLabel = document.getElementById("show-more-label");
 const showMoreArrow = document.getElementById("show-more-arrow");
 const expandedDetails = document.getElementById("expanded-details");
+
+const THEME_ORDER = [
+  { className: "theme-obsidian", displayName: "Obsidian" },
+  { className: "theme-void", displayName: "Void" },
+  { className: "theme-bone", displayName: "Bone" },
+];
 
 const livedLabel = document.getElementById("lived-label");
 const remainingLabel = document.getElementById("remaining-label");
@@ -86,10 +93,11 @@ function calculateTimeLeftToday() {
 }
 
 // Renders the countdown values into the two display lines.
+// Numbers and unit labels are wrapped in separate spans for independent styling.
 function renderCountdown(lifespanRemaining, timeLeftToday) {
   if (lifespanRemaining === null) {
-    countdownLineOne.textContent = "Your time has come.";
-    countdownLineTwo.textContent = "";
+    countdownLineOne.innerHTML = `<span class="countdown-number">Your time has come.</span>`;
+    countdownLineTwo.innerHTML = "";
     return;
   }
 
@@ -100,10 +108,23 @@ function renderCountdown(lifespanRemaining, timeLeftToday) {
   const formattedMinutes = padToTwoDigits(timeLeftToday.minutes);
   const formattedSeconds = padToTwoDigits(timeLeftToday.seconds);
 
-  countdownLineOne.textContent =
-    `- ${formattedYears} Years - ${formattedMonths} Months - ${formattedDays} Days -`;
-  countdownLineTwo.textContent =
-    `- ${formattedHours} Hours - ${formattedMinutes} Minutes - ${formattedSeconds} Seconds -`;
+  countdownLineOne.innerHTML =
+    `<span class="countdown-separator">- </span>` +
+    `<span class="countdown-number">${formattedYears}</span> <span class="countdown-label">Years</span>` +
+    `<span class="countdown-separator"> - </span>` +
+    `<span class="countdown-number">${formattedMonths}</span> <span class="countdown-label">Months</span>` +
+    `<span class="countdown-separator"> - </span>` +
+    `<span class="countdown-number">${formattedDays}</span> <span class="countdown-label">Days</span>` +
+    `<span class="countdown-separator"> -</span>`;
+
+  countdownLineTwo.innerHTML =
+    `<span class="countdown-separator">- </span>` +
+    `<span class="countdown-number">${formattedHours}</span> <span class="countdown-label">Hours</span>` +
+    `<span class="countdown-separator"> - </span>` +
+    `<span class="countdown-number">${formattedMinutes}</span> <span class="countdown-label">Minutes</span>` +
+    `<span class="countdown-separator"> - </span>` +
+    `<span class="countdown-number">${formattedSeconds}</span> <span class="countdown-label">Seconds</span>` +
+    `<span class="countdown-separator"> -</span>`;
 }
 
 // Populates the life completion percentage and progress bar.
@@ -198,12 +219,37 @@ function handleReset() {
   });
 }
 
-// Loads the stored date of birth and initializes the countdown.
-// If no date of birth is stored, shows the setup prompt instead.
+// Applies the given theme by updating the body class and button label.
+function applyTheme(themeClassName) {
+  const themeEntry = THEME_ORDER.find(entry => entry.className === themeClassName);
+  if (!themeEntry) return;
+
+  THEME_ORDER.forEach(entry => document.body.classList.remove(entry.className));
+  document.body.classList.add(themeClassName);
+  themeButton.textContent = themeEntry.displayName;
+}
+
+// Cycles to the next theme in the list and saves the selection.
+function handleThemeCycle() {
+  const currentThemeIndex = THEME_ORDER.findIndex(
+    entry => document.body.classList.contains(entry.className)
+  );
+  const nextThemeIndex = (currentThemeIndex + 1) % THEME_ORDER.length;
+  const nextTheme = THEME_ORDER[nextThemeIndex];
+
+  applyTheme(nextTheme.className);
+  chrome.storage.local.set({ theme: nextTheme.className });
+}
+
+// Loads the stored date of birth and theme, then initializes the page.
 function initialize() {
-  chrome.storage.local.get("dateOfBirth", (result) => {
+  chrome.storage.local.get(["dateOfBirth", "theme"], (result) => {
+    const savedTheme = result.theme || "theme-obsidian";
+    applyTheme(savedTheme);
+
     if (result.dateOfBirth) {
       resetButton.classList.remove("hidden");
+      themeButton.classList.remove("hidden");
       showMoreSection.classList.remove("hidden");
       startCountdown(result.dateOfBirth);
       renderExpandedDetails(result.dateOfBirth);
@@ -215,5 +261,6 @@ function initialize() {
 
 showMoreButton.addEventListener("click", toggleShowMore);
 resetButton.addEventListener("click", handleReset);
+themeButton.addEventListener("click", handleThemeCycle);
 
 initialize();
