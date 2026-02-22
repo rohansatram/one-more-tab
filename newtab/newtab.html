@@ -18,6 +18,42 @@
       <p id="countdown-line-two"></p>
     </div>
 
+    <div id="show-more-section" class="hidden">
+      <button id="show-more-button">
+        <span id="show-more-label">Show More</span>
+        <span id="show-more-arrow">▾</span>
+      </button>
+
+      <div id="expanded-details" class="hidden">
+        <!-- Life completion bar -->
+        <div id="life-completion">
+          <div id="completion-labels">
+            <span id="lived-label"></span>
+            <span id="remaining-label"></span>
+          </div>
+          <div id="progress-bar-track">
+            <div id="progress-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Lived units -->
+        <div id="lived-units">
+          <p class="lived-unit" id="weekends-left"></p>
+          <p class="lived-unit" id="mornings-left"></p>
+          <p class="lived-unit" id="books-left"></p>
+          <p class="lived-unit" id="trips-left"></p>
+        </div>
+
+        <!-- Death probability -->
+        <div id="death-probability">
+          <h2 id="probability-title">Probability</h2>
+          <p class="probability-stat" id="probability-this-year"></p>
+          <p class="probability-stat" id="probability-before-60"></p>
+          <p class="probability-stat" id="probability-before-80"></p>
+        </div>
+      </div>
+    </div>
+
     <p id="setup-prompt" class="hidden">
       <a href="../setup/setup.html">Enter your date of birth to begin.</a>
     </p>
@@ -25,6 +61,7 @@
 
   <button id="reset-button" class="hidden">Reset</button>
 
+  <script src="../data/mortality.js"></script>
   <script src="newtab.js"></script>
 </body>
 </html>
