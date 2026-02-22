@@ -20,7 +20,7 @@ body {
 }
 
 #title {
-  font-size: 3.2rem;
+  font-size: 3rem;
   font-weight: 500;
   font-variant: small-caps;
   letter-spacing: 0.15em;
@@ -43,6 +43,127 @@ body {
   color: #d4d0c8;
 }
 
+/* Show More button and dropdown */
+
+#show-more-section {
+  margin-top: 4rem;
+}
+
+#show-more-button {
+  font-family: "Cormorant Garamond", "Georgia", serif;
+  font-size: 1.1rem;
+  font-variant: small-caps;
+  letter-spacing: 0.08em;
+  background: none;
+  border: none;
+  color: #6a6a6f;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 0.3s ease;
+}
+
+#show-more-button:hover {
+  color: #a09d95;
+}
+
+#show-more-arrow {
+  display: inline-block;
+  transition: transform 0.3s ease;
+  font-size: 0.9rem;
+}
+
+#show-more-arrow.rotated {
+  transform: rotate(180deg);
+}
+
+/* Expanded details area */
+
+#expanded-details {
+  margin-top: 2.5rem;
+  animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Life completion progress bar */
+
+#life-completion {
+  margin-bottom: 2.5rem;
+}
+
+#completion-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.45rem;
+  font-variant: small-caps;
+  letter-spacing: 0.06em;
+  color: #8a8880;
+  margin-bottom: 0.5rem;
+}
+
+#progress-bar-track {
+  width: 100%;
+  max-width: 500px;
+  height: 6px;
+  background-color: #3e3f44;
+  border-radius: 3px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+#progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a756a, #a09d95);
+  border-radius: 3px;
+  transition: width 1s ease;
+}
+
+/* Lived units */
+
+#lived-units {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem 2rem;
+  margin-bottom: 2.5rem;
+}
+
+.lived-unit {
+  font-size: 1.5rem;
+  color: #8a8880;
+  font-variant: small-caps;
+  letter-spacing: 0.05em;
+}
+
+/* Death probability */
+
+#death-probability {
+  margin-bottom: 1rem;
+}
+
+#probability-title {
+  font-size: 1.65rem;
+  font-weight: 500;
+  font-variant: small-caps;
+  letter-spacing: 0.1em;
+  color: #7a756a;
+  margin-bottom: 0.8rem;
+}
+
+.probability-stat {
+  font-size: 1.4rem;
+  color: #8a8880;
+  margin-bottom: 0.3rem;
+  letter-spacing: 0.03em;
+}
+
+/* Setup prompt */
+
 #setup-prompt {
   margin-top: 4rem;
   font-size: 1.1rem;
@@ -60,6 +181,8 @@ body {
 #setup-prompt a:hover {
   border-bottom-color: #a09d95;
 }
+
+/* Reset button */
 
 #reset-button {
   position: fixed;
