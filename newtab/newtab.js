@@ -92,12 +92,40 @@ function calculateTimeLeftToday() {
   return { hours, minutes, seconds };
 }
 
+// Creates a span element with the given class and text content.
+function createSpan(className, text) {
+  const span = document.createElement("span");
+  span.className = className;
+  span.textContent = text;
+  return span;
+}
+
+// Builds a countdown line element from an array of [value, label] pairs.
+function buildCountdownLine(container, segments) {
+  container.textContent = "";
+
+  container.appendChild(createSpan("countdown-separator", "- "));
+
+  segments.forEach((segment, index) => {
+    container.appendChild(createSpan("countdown-number", segment[0]));
+    container.appendChild(document.createTextNode(" "));
+    container.appendChild(createSpan("countdown-label", segment[1]));
+
+    if (index < segments.length - 1) {
+      container.appendChild(createSpan("countdown-separator", " - "));
+    }
+  });
+
+  container.appendChild(createSpan("countdown-separator", " -"));
+}
+
 // Renders the countdown values into the two display lines.
-// Numbers and unit labels are wrapped in separate spans for independent styling.
+// Uses DOM manipulation instead of innerHTML for security compliance.
 function renderCountdown(lifespanRemaining, timeLeftToday) {
   if (lifespanRemaining === null) {
-    countdownLineOne.innerHTML = `<span class="countdown-number">Your time has come.</span>`;
-    countdownLineTwo.innerHTML = "";
+    countdownLineOne.textContent = "";
+    countdownLineOne.appendChild(createSpan("countdown-number", "Your time has come."));
+    countdownLineTwo.textContent = "";
     return;
   }
 
@@ -108,23 +136,17 @@ function renderCountdown(lifespanRemaining, timeLeftToday) {
   const formattedMinutes = padToTwoDigits(timeLeftToday.minutes);
   const formattedSeconds = padToTwoDigits(timeLeftToday.seconds);
 
-  countdownLineOne.innerHTML =
-    `<span class="countdown-separator">- </span>` +
-    `<span class="countdown-number">${formattedYears}</span> <span class="countdown-label">Years</span>` +
-    `<span class="countdown-separator"> - </span>` +
-    `<span class="countdown-number">${formattedMonths}</span> <span class="countdown-label">Months</span>` +
-    `<span class="countdown-separator"> - </span>` +
-    `<span class="countdown-number">${formattedDays}</span> <span class="countdown-label">Days</span>` +
-    `<span class="countdown-separator"> -</span>`;
+  buildCountdownLine(countdownLineOne, [
+    [formattedYears, "Years"],
+    [formattedMonths, "Months"],
+    [formattedDays, "Days"],
+  ]);
 
-  countdownLineTwo.innerHTML =
-    `<span class="countdown-separator">- </span>` +
-    `<span class="countdown-number">${formattedHours}</span> <span class="countdown-label">Hours</span>` +
-    `<span class="countdown-separator"> - </span>` +
-    `<span class="countdown-number">${formattedMinutes}</span> <span class="countdown-label">Minutes</span>` +
-    `<span class="countdown-separator"> - </span>` +
-    `<span class="countdown-number">${formattedSeconds}</span> <span class="countdown-label">Seconds</span>` +
-    `<span class="countdown-separator"> -</span>`;
+  buildCountdownLine(countdownLineTwo, [
+    [formattedHours, "Hours"],
+    [formattedMinutes, "Minutes"],
+    [formattedSeconds, "Seconds"],
+  ]);
 }
 
 // Populates the life completion percentage and progress bar.
