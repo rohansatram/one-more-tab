@@ -4,14 +4,64 @@
   box-sizing: border-box;
 }
 
+/* ─── Theme Definitions ─── */
+
+/* Obsidian (Default) */
+:root,
+body.theme-obsidian {
+  --bg: #2b2d31;
+  --text-primary: #d4d0c8;
+  --text-secondary: #8a8880;
+  --text-muted: #6a6a6f;
+  --text-faint: #4a4a50;
+  --bar-track: #3e3f44;
+  --bar-fill-start: #7a756a;
+  --bar-fill-end: #a09d95;
+  --btn-border: #4a4a50;
+  --btn-hover: #a09d95;
+}
+
+/* Void — Pure Black */
+body.theme-void {
+  --bg: #000000;
+  --text-primary: #f5f5f5;
+  --text-secondary: #999999;
+  --text-muted: #666666;
+  --text-faint: #444444;
+  --bar-track: #1a1a1a;
+  --bar-fill-start: #555555;
+  --bar-fill-end: #888888;
+  --btn-border: #444444;
+  --btn-hover: #cccccc;
+}
+
+/* Bone — Light Mortality */
+body.theme-bone {
+  --bg: #f4f1ea;
+  --text-primary: #1c1c1c;
+  --text-secondary: #5a554f;
+  --text-muted: #8a847d;
+  --text-faint: #b5afa8;
+  --bar-track: #d8d3cb;
+  --bar-fill-start: #8a847d;
+  --bar-fill-end: #5a554f;
+  --btn-border: #b5afa8;
+  --btn-hover: #5a554f;
+}
+
+
+
+/* ─── Base Layout ─── */
+
 body {
-  background-color: #2b2d31;
-  color: #e0ddd5;
+  background-color: var(--bg);
+  color: var(--text-primary);
   font-family: "Cormorant Garamond", "Georgia", serif;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 #container {
@@ -19,31 +69,49 @@ body {
   padding: 2rem;
 }
 
+/* ─── Title ─── */
+
 #title {
   font-size: 3rem;
   font-weight: 500;
   font-variant: small-caps;
   letter-spacing: 0.15em;
   margin-bottom: 5rem;
-  color: #d4d0c8;
+  color: var(--text-primary);
 }
+
+/* ─── Countdown ─── */
 
 #countdown {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.1rem;
 }
 
 #countdown p {
-  font-size: 3.5rem;
   font-weight: 400;
   font-variant: small-caps;
   letter-spacing: 0.12em;
-  color: #d4d0c8;
+  color: var(--text-primary);
+  line-height: 1.2;
 }
 
-/* Show More button and dropdown */
+.countdown-number {
+  font-size: 4.2rem;
+}
+
+.countdown-label {
+  font-size: 2.8rem;
+  opacity: 0.55;
+}
+
+.countdown-separator {
+  font-size: 2.8rem;
+  opacity: 0.35;
+}
+
+/* ─── Show More Button ─── */
 
 #show-more-section {
   margin-top: 4rem;
@@ -56,7 +124,7 @@ body {
   letter-spacing: 0.08em;
   background: none;
   border: none;
-  color: #6a6a6f;
+  color: var(--text-muted);
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -65,7 +133,7 @@ body {
 }
 
 #show-more-button:hover {
-  color: #a09d95;
+  color: var(--btn-hover);
 }
 
 #show-more-arrow {
@@ -78,7 +146,7 @@ body {
   transform: rotate(180deg);
 }
 
-/* Expanded details area */
+/* ─── Expanded Details ─── */
 
 #expanded-details {
   margin-top: 2.5rem;
@@ -90,7 +158,7 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Life completion progress bar */
+/* ─── Life Completion Progress Bar ─── */
 
 #life-completion {
   margin-bottom: 2.5rem;
@@ -102,7 +170,7 @@ body {
   font-size: 1.45rem;
   font-variant: small-caps;
   letter-spacing: 0.06em;
-  color: #8a8880;
+  color: var(--text-secondary);
   margin-bottom: 0.5rem;
 }
 
@@ -110,7 +178,7 @@ body {
   width: 100%;
   max-width: 500px;
   height: 6px;
-  background-color: #3e3f44;
+  background-color: var(--bar-track);
   border-radius: 3px;
   margin: 0 auto;
   overflow: hidden;
@@ -118,12 +186,12 @@ body {
 
 #progress-bar-fill {
   height: 100%;
-  background: linear-gradient(90deg, #7a756a, #a09d95);
+  background: linear-gradient(90deg, var(--bar-fill-start), var(--bar-fill-end));
   border-radius: 3px;
   transition: width 1s ease;
 }
 
-/* Lived units */
+/* ─── Lived Units ─── */
 
 #lived-units {
   display: flex;
@@ -135,12 +203,12 @@ body {
 
 .lived-unit {
   font-size: 1.5rem;
-  color: #8a8880;
+  color: var(--text-secondary);
   font-variant: small-caps;
   letter-spacing: 0.05em;
 }
 
-/* Death probability */
+/* ─── Death Probability ─── */
 
 #death-probability {
   margin-bottom: 1rem;
@@ -151,18 +219,18 @@ body {
   font-weight: 500;
   font-variant: small-caps;
   letter-spacing: 0.1em;
-  color: #7a756a;
+  color: var(--text-secondary);
   margin-bottom: 0.8rem;
 }
 
 .probability-stat {
   font-size: 1.4rem;
-  color: #8a8880;
+  color: var(--text-secondary);
   margin-bottom: 0.3rem;
   letter-spacing: 0.03em;
 }
 
-/* Setup prompt */
+/* ─── Setup Prompt ─── */
 
 #setup-prompt {
   margin-top: 4rem;
@@ -172,38 +240,45 @@ body {
 }
 
 #setup-prompt a {
-  color: #a09d95;
+  color: var(--btn-hover);
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.3s ease;
 }
 
 #setup-prompt a:hover {
-  border-bottom-color: #a09d95;
+  border-bottom-color: var(--btn-hover);
 }
 
-/* Reset button */
+/* ─── Bottom Buttons ─── */
 
-#reset-button {
+.bottom-button {
   position: fixed;
   bottom: 1.5rem;
-  right: 1.5rem;
   font-family: "Cormorant Garamond", "Georgia", serif;
   font-size: 0.9rem;
   font-variant: small-caps;
   letter-spacing: 0.08em;
   padding: 0.4rem 1rem;
-  border: 1px solid #4a4a50;
+  border: 1px solid var(--btn-border);
   border-radius: 4px;
   background: transparent;
-  color: #6a6a6f;
+  color: var(--text-muted);
   cursor: pointer;
   transition: color 0.3s ease, border-color 0.3s ease;
 }
 
-#reset-button:hover {
-  color: #a09d95;
-  border-color: #a09d95;
+.bottom-button:hover {
+  color: var(--btn-hover);
+  border-color: var(--btn-hover);
+}
+
+#theme-button {
+  right: 6.5rem;
+}
+
+#reset-button {
+  right: 1.5rem;
 }
 
 .hidden {
