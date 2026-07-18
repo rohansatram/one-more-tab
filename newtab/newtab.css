@@ -8,7 +8,7 @@
 
 /* Obsidian (Default) */
 :root,
-body.theme-obsidian {
+.theme-obsidian {
   --bg: #2b2d31;
   --text-primary: #d4d0c8;
   --text-secondary: #8a8880;
@@ -22,7 +22,7 @@ body.theme-obsidian {
 }
 
 /* Void — Pure Black */
-body.theme-void {
+.theme-void {
   --bg: #000000;
   --text-primary: #f5f5f5;
   --text-secondary: #999999;
@@ -36,7 +36,7 @@ body.theme-void {
 }
 
 /* Bone — Light Mortality */
-body.theme-bone {
+.theme-bone {
   --bg: #f4f1ea;
   --text-primary: #1c1c1c;
   --text-secondary: #5a554f;

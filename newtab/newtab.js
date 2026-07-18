@@ -207,7 +207,7 @@ function renderExpandedDetails(dateOfBirth) {
   renderDeathProbability(dateOfBirth);
 }
 
-// Toggles the expanded details section open/closed.
+// Toggles the expanded details section open/closed and persists the state.
 function toggleShowMore() {
   const isCurrentlyHidden = expandedDetails.classList.contains("hidden");
 
@@ -220,6 +220,8 @@ function toggleShowMore() {
     showMoreLabel.textContent = "Show More";
     showMoreArrow.classList.remove("rotated");
   }
+
+  chrome.storage.local.set({ showMoreExpanded: isCurrentlyHidden });
 }
 
 // Starts the live countdown, updating every second.
@@ -246,7 +248,10 @@ function applyTheme(themeClassName) {
   const themeEntry = THEME_ORDER.find(entry => entry.className === themeClassName);
   if (!themeEntry) return;
 
-  THEME_ORDER.forEach(entry => document.body.classList.remove(entry.className));
+  THEME_ORDER.forEach(entry => {
+    document.body.classList.remove(entry.className);
+    document.documentElement.classList.remove(entry.className);
+  });
   document.body.classList.add(themeClassName);
   themeButton.textContent = themeEntry.displayName;
 }
@@ -261,13 +266,15 @@ function handleThemeCycle() {
 
   applyTheme(nextTheme.className);
   chrome.storage.local.set({ theme: nextTheme.className });
+  localStorage.setItem("theme", nextTheme.className);
 }
 
-// Loads the stored date of birth and theme, then initializes the page.
+// Loads the stored date of birth, theme, and show more state, then initializes the page.
 function initialize() {
-  chrome.storage.local.get(["dateOfBirth", "theme"], (result) => {
+  chrome.storage.local.get(["dateOfBirth", "theme", "showMoreExpanded"], (result) => {
     const savedTheme = result.theme || "theme-obsidian";
     applyTheme(savedTheme);
+    localStorage.setItem("theme", savedTheme);
 
     if (result.dateOfBirth) {
       resetButton.classList.remove("hidden");
@@ -275,6 +282,12 @@ function initialize() {
       showMoreSection.classList.remove("hidden");
       startCountdown(result.dateOfBirth);
       renderExpandedDetails(result.dateOfBirth);
+
+      if (result.showMoreExpanded) {
+        expandedDetails.classList.remove("hidden");
+        showMoreLabel.textContent = "Show Less";
+        showMoreArrow.classList.add("rotated");
+      }
     } else {
       setupPrompt.classList.remove("hidden");
     }
